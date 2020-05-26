@@ -1,5 +1,10 @@
 package com.proyecto.fabrica.service;
 
+import com.proyecto.fabrica.excel.ExcelGenerator;
+import com.proyecto.fabrica.modelo.Pedidos;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.List;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +24,7 @@ public class SendMailService {
 
 
 
-    public void sendMail(String from, String to, String subject, String body) {
+    public void sendMail(String from, String to, String subject, String body,List<Pedidos> pedidos) throws IOException {
 
         SimpleMailMessage mail = new SimpleMailMessage();
 
@@ -34,6 +39,9 @@ public class SendMailService {
         MimeMessage message = javaMailSender.createMimeMessage();
         String cc = "";
         cc = "Archivo; De ; Prueba;";
+
+        ByteArrayInputStream in = ExcelGenerator.customersToExcel(pedidos);
+        
         
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -41,7 +49,7 @@ public class SendMailService {
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setText(body);
-            helper.addAttachment("MyTestFile.csv", new ByteArrayResource(cc.getBytes()));
+            helper.addAttachment("Pedidos.xlsx", new ByteArrayResource(in.readAllBytes()));
             javaMailSender.send(message);
         } catch (MessagingException e) {
 

@@ -20,7 +20,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class ExcelGenerator {
 
     public static ByteArrayInputStream customersToExcel(List<Pedidos> customers) throws IOException {
-        String[] COLUMNs = {"Id", "Productos Vendidos"};
+        String[] COLUMNs = {"Id", "Productos Vendidos","Cantidad","Cliente","Estado","Fecha De Entrega","Fecha Final","Precio"};
         try(
                 Workbook workbook = new XSSFWorkbook();
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -56,6 +56,12 @@ public class ExcelGenerator {
 
                 row.createCell(0).setCellValue(customer.getId());
                 row.createCell(1).setCellValue(String.valueOf(customer.getRepuestos()));
+                row.createCell(2).setCellValue(customer.getCantidad());
+                row.createCell(3).setCellValue(customer.getClientes());
+                row.createCell(4).setCellValue(customer.getEstado());
+                row.createCell(5).setCellValue(customer.getFecha_entrega());
+                row.createCell(6).setCellValue(customer.getFecha_recibido());
+                row.createCell(7).setCellValue(customer.getPrecio_final());
             }
 
             workbook.write(out);
