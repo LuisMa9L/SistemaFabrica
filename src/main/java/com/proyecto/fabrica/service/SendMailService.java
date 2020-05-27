@@ -16,17 +16,23 @@ public class SendMailService {
 
 
 
-    public void sendMail(String from, String to, String subject, String body) {
+    public void sendMail(String from, String to, String subject, String body,List<Pedidos> pedidos) throws IOException {
+        
+        MimeMessage message = javaMailSender.createMimeMessage();
 
-        SimpleMailMessage mail = new SimpleMailMessage();
+        ByteArrayInputStream in = ExcelGenerator.customersToExcel(pedidos);
+        
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setFrom(from);
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(body);
+            helper.addAttachment("Pedidos.xlsx", new ByteArrayResource(in.readAllBytes()));
+            javaMailSender.send(message);
+        } catch (MessagingException e) {
 
-        mail.setFrom(from);
-        mail.setTo(to);
-        mail.setSubject(subject);
-        mail.setText(body);
-
-
-        javaMailSender.send(mail);
+        }
 
 
     }
