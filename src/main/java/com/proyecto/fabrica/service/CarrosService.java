@@ -18,7 +18,7 @@ public class CarrosService implements ICarrosService {
 
     @Override
     public List<Carros> listar() {
-
+        System.out.println(data.findAll());
         return (List<Carros>) data.findAll();
     }
 

@@ -27,6 +27,7 @@ public class Productos {
         this.carros = carros;
         this.precio = precio;
         this.imagenurl = imagenurl;
+        ///consultado 
     }
 
     public String getId() {
