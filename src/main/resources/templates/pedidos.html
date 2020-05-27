@@ -33,7 +33,7 @@
         <tbody>
         <tr th:each="pedido:${pedidos}">
             <td th:text="${pedido.id}"></td>
-            <td th:text="${pedido.fecha_recibido}"></td>
+            <td type="date" th:text="${pedido.fecha_recibido}"></td>
             <td th:text="${pedido.fecha_entrega}"></td>
             <td th:text="${pedido.estado}"></td>
             <td th:text="${pedido.clientes}"></td>
