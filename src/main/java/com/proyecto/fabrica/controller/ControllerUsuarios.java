@@ -31,11 +31,36 @@ public class ControllerUsuarios {
         modelo.addAttribute("usuarios", new Usuario());
         return "usuariosnuevo";
     }
+    
+    @GetMapping("/loginusuario")
+    public String login(Model modelo){
+        modelo.addAttribute("usuarios", new Usuario());
+        modelo.addAttribute("msj", "");
+        return "usuarioslogin";
+    }
 
     @PostMapping("/guardarusuario")
     public String save(@Valid Usuario c, Model model){
         service.save(c);
         return "redirect:/listausuarios";
+    }
+        
+    @PostMapping("/validarusuario")
+    public String validar(@Valid Usuario c, Model model){
+        Optional<Usuario>usuario=service.listarId(c.getId());
+        if (usuario.isEmpty()) {
+            model.addAttribute("usuarios", c);
+            model.addAttribute("msj", "Usuario o contraseña inválidos");
+            return "usuarioslogin";
+        } else {
+            if (usuario.get().getPassword().equals(c.getPassword())){
+                return "redirect:/productos";
+            } else {
+                model.addAttribute("usuarios", c);
+                model.addAttribute("msj", "Usuario o contraseña inválidos");
+                return "usuarioslogin";
+            }
+        }
     }
 
     @GetMapping("/editarusuario/{id}")
