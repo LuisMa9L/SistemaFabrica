@@ -24,27 +24,51 @@
                     </div>
                     <div class="form-group">
                         <label>Fecha de entrega</label>
-                        <input class="form-control" type="date" th:field="*{fecha_entrega}">
+                        <input readonly="readonly" class="form-control" type="date" th:field="*{fecha_entrega}">
                     </div>
                     <div class="form-group">
                         <label>Estado</label>
-                        <input class="form-control" type="text" th:field="*{estado}">
+                        <div class="form-group">
+                                <select  class="form-control" th:field="*{estado}">
+                                    <option value="Pendiente">Pendiente</option>
+                                    <option value="Enviado">Enviado</option>
+                                    <option value="Entregado">Entregado</option>
+                                </select>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label>Repuestos</label>
-                        <input class="form-control" type="text" th:field="*{repuestos}">
+                        <label>Repuesto</label>
+                        <div class="form-group">
+                                <select  class="form-control" th:field="*{repuestos}">
+                                        <option th:each="repuesto:${lrepuestos}" 
+                                        th:text="${repuesto.id}+' - Nombre: '+${repuesto.nombre}+' - Precio: Q'+${repuesto.precio}" 
+                                        th:value="${repuesto.id}"
+                                        th:precio="${repuesto.precio}"
+                                        >
+                                        </option>
+                                </select>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>Cantidad</label>
-                        <input class="form-control" type="text" th:field="*{cantidad}">
+                        <input class="form-control" type="number" th:field="*{cantidad}">
                     </div>
                     <div class="form-group">
-                        <label>Clientes</label>
-                        <input class="form-control" type="text" th:field="*{clientes}">
+                        <label>Cliente</label>
+                        <div class="form-group">
+                                <select  class="form-control" th:field="*{clientes}">
+                                        <option th:each="cliente:${lclientes}" 
+                                        th:text="${cliente.id}+' - Nombre: '+${cliente.nombre}+' - Días de Entrega: '+${cliente.entrega}" 
+                                        th:value="${cliente.id}"
+                                        th:dias="${cliente.entrega}"
+                                        >
+                                        </option>
+                                </select>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>Precio final</label>
-                        <input class="form-control" type="number" th:field="*{precio_final}">
+                        <input readonly="readonly" class="form-control" type="number" th:field="*{precio_final}">
                     </div>
                 </div>
                 <div class="card-footer">
@@ -56,6 +80,49 @@
     </div>
 </div>
 <hr>
+<script>
+
+// Calculando precio
+var campoRepuesto = document.getElementById("repuestos");
+var campoCantida = document.getElementById("cantidad");
+
+campoRepuesto.addEventListener("change", function() {
+        CalculandoPrecioFinal();
+});
+campoCantida.addEventListener("change", function() {
+        CalculandoPrecioFinal();
+});
+function CalculandoPrecioFinal() {
+    var opt = campoRepuesto.options[campoRepuesto.selectedIndex];
+    let precioUnidad = opt.getAttribute("precio");
+    var campoTotal = document.getElementById("precio_final");
+    let cantidadp = campoCantida.value;
+    campoTotal.value = parseInt(precioUnidad)*parseInt(cantidadp);
+}
+
+// Calculando fecha
+var fechaRecibido = document.getElementById("fecha_recibido");
+var clienteDestino = document.getElementById("clientes");
+
+fechaRecibido.addEventListener("change", function() {
+        CalculandoFechaEntrega();
+});
+clienteDestino.addEventListener("change", function() {
+        CalculandoFechaEntrega();
+});
+function CalculandoFechaEntrega() {
+    var fecha = new Date(fechaRecibido.value);
+    var campoCliente = document.getElementById("clientes");
+    var clienteSeleccionado = campoCliente.options[campoCliente.selectedIndex];
+    let diasEntrega = clienteSeleccionado.getAttribute("dias");
+    fecha.setDate(fecha.getDate() + parseInt(diasEntrega))
+    let fecha2 = document.getElementById("fecha_entrega");
+    fecha2.value = fecha.toISOString().substr(0, 10);
+}
+
+
+    
+</script>
 </body>
 <!-- Footer -->
 <footer class="page-footer font-small blue">

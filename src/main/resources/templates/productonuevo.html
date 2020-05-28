@@ -31,7 +31,7 @@
                         
                         <label>Carro</label>
                         <div class="form-group">
-                                <select  class="form-control" name="carros" id="carros">
+                                <select  class="form-control" th:field="*{carros}">
                                         <option th:each="carro:${lcarros}" th:text="${carro.id}+'-'+${carro.marca}+'-'+${carro.codigo_universal}" th:value="${carro.id}">
                                             
                                         </option>

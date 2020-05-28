@@ -23,6 +23,7 @@
             <th>Direccion</th>
             <th>Telefono</th>
             <th>Contraseña</th>
+            <th>URL Pedidos</th>
             <th>Acciones</th>
         </tr>
         </thead>
@@ -33,6 +34,7 @@
                 <td th:text="${cliente.direccion}"></td>
                 <td th:text="${cliente.telefono}"></td>
                 <td th:text="${cliente.password}"></td>
+                <td><a th:href="@{/pedidos/cliente/}+${cliente.id}" th:text="@{/pedidos/cliente/}+${cliente.id}"></a></td>
                 <td>
                     <a class="btn btn-warning" th:href="@{/editar/}+${cliente.id}">Editar</a>
                     <a class="btn btn-danger" th:onclick="eliminar([[${cliente.id}]])">Eliminar</a>

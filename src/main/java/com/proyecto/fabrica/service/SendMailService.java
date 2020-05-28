@@ -24,7 +24,7 @@ public class SendMailService {
 
 
 
-    public void sendMail(String from, String to, String subject, String body,List<Pedidos> pedidos) throws IOException {
+    public void sendMail(String from, String to, String subject, String body,List<Pedidos> pedidos) throws IOException, MessagingException {
         
         MimeMessage message = javaMailSender.createMimeMessage();
 

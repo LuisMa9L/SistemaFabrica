@@ -52,6 +52,8 @@ public class ControllerProductos {
     {
         Optional<Productos> productos=service.listarId(id);
         modelo.addAttribute("productos", productos);
+        List<Carros> carros=serviceCarros.listar();
+        modelo.addAttribute("lcarros", carros);
         return "productonuevo";
     }
 
