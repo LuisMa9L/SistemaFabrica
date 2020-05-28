@@ -38,6 +38,28 @@ public class ControllerPedidos {
         model.addAttribute("pedidos", pedidos);
         return "pedidos";
     }
+    
+    @GetMapping("/pedidos/cliente/{id}")
+    public String listarporcliente(@PathVariable String id,Model model)
+    {
+        List<Pedidos> pedidos=service.listar();
+        for (int i = pedidos.size()-1; i >= 0; i--) {
+            Pedidos pedido = pedidos.get(i);
+            if (!id.equals(pedido.getClientes())) {
+                pedidos.remove(pedido);
+            } else {
+                if (pedido.getVisto()==0) {
+                    pedido.setVisto(1);
+                    service.save(pedido);
+                } else {
+                    pedidos.remove(pedido);
+                }
+            }
+        }
+        model.addAttribute("pedidos", pedidos);
+        model.addAttribute("idcliente", id);
+        return "pedidosporcliente";
+    }
 
     @GetMapping("/pedidodetalle/{id}")
     public String listardetalle(@PathVariable String id, Model modelo)

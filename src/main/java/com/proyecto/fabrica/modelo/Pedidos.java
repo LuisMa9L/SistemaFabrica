@@ -23,6 +23,7 @@ public class Pedidos {
     private String clientes;
     private int precio_final;
     private int cantidad;
+    private int visto;
 
     public Pedidos () {
 
@@ -35,6 +36,7 @@ public class Pedidos {
         this.repuestos = repuestos;
         this.clientes = clientes;
         this.precio_final = precio_final;
+        this.visto = 0;
     }
 
     @Autowired
@@ -106,7 +108,15 @@ public class Pedidos {
 
         this.cantidad = cantidad;
     }
+    public int getVisto() {
 
+        return this.visto;
+    }
+
+    public void setVisto(int visto) {
+
+        this.visto = visto;
+    }
 
     public void setPrecio_final(int precio_final) {
 

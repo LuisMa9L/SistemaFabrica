@@ -5,7 +5,6 @@ import com.proyecto.fabrica.modelo.Pedidos;
 import com.proyecto.fabrica.service.SendMailService;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,7 +30,6 @@ public class SendMailController {
         List<Pedidos> listaPedidos = service.listar();
         String message = body +"\n\n Datos de contacto: " + "\nNombre: " + name + "\nE-mail: " + mail;
         mailService.sendMail("elisamargarita.2899@gmail.com",mail,subject,message,listaPedidos);
-
         return "sendmail";
     }
 }
