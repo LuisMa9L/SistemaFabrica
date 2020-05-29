@@ -1,5 +1,6 @@
 package com.proyecto.fabrica.controller;
 
+import com.proyecto.fabrica.consumeAPI.NetCliente;
 import com.proyecto.fabrica.interfaceService.IUsuarioService;
 import com.proyecto.fabrica.modelo.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +29,22 @@ public class ControllerUsuarios {
 
     @GetMapping("/nuevousuario")
     public String agregar(Model modelo){
+        NetCliente cli = new NetCliente();
+        String res = cli.MetodoGet("http://localhost:8080/pedidosapi");
+        System.out.println(res);
         modelo.addAttribute("usuarios", new Usuario());
         return "usuariosnuevo";
     }
     
     @GetMapping("/loginusuario")
     public String login(Model modelo){
+        modelo.addAttribute("usuarios", new Usuario());
+        modelo.addAttribute("msj", "");
+        return "usuarioslogin";
+    }
+    
+    @GetMapping("/")
+    public String Home(Model modelo){
         modelo.addAttribute("usuarios", new Usuario());
         modelo.addAttribute("msj", "");
         return "usuarioslogin";
