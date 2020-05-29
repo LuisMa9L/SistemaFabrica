@@ -18,7 +18,6 @@ public class CarrosService implements ICarrosService {
 
     @Override
     public List<Carros> listar() {
-
         return (List<Carros>) data.findAll();
     }
 

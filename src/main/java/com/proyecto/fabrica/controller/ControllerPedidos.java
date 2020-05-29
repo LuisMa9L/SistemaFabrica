@@ -2,8 +2,12 @@ package com.proyecto.fabrica.controller;
 
 
 
+import com.proyecto.fabrica.interfaceService.IClienteService;
 import com.proyecto.fabrica.interfaceService.IPedidosService;
+import com.proyecto.fabrica.interfaceService.IProductosService;
+import com.proyecto.fabrica.modelo.Clientes;
 import com.proyecto.fabrica.modelo.Pedidos;
+import com.proyecto.fabrica.modelo.Productos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +26,10 @@ public class ControllerPedidos {
 
     @Autowired
     private IPedidosService service;
+    @Autowired
+    private IProductosService serviceRepuestos;
+    @Autowired
+    private IClienteService serviceClientes;
 
     @GetMapping("/pedidos")
     public String listar(Model model)
@@ -29,6 +37,28 @@ public class ControllerPedidos {
         List<Pedidos> pedidos=service.listar();
         model.addAttribute("pedidos", pedidos);
         return "pedidos";
+    }
+    
+    @GetMapping("/pedidos/cliente/{id}")
+    public String listarporcliente(@PathVariable String id,Model model)
+    {
+        List<Pedidos> pedidos=service.listar();
+        for (int i = pedidos.size()-1; i >= 0; i--) {
+            Pedidos pedido = pedidos.get(i);
+            if (!id.equals(pedido.getClientes())) {
+                pedidos.remove(pedido);
+            } else {
+                if (pedido.getVisto()==0) {
+                    pedido.setVisto(1);
+                    service.save(pedido);
+                } else {
+                    pedidos.remove(pedido);
+                }
+            }
+        }
+        model.addAttribute("pedidos", pedidos);
+        model.addAttribute("idcliente", id);
+        return "pedidosporcliente";
     }
 
     @GetMapping("/pedidodetalle/{id}")
@@ -42,6 +72,10 @@ public class ControllerPedidos {
     @GetMapping("/pedidonuevo")
     public String agregar(Model modelo){
         modelo.addAttribute("pedidos", new Pedidos());
+        List<Productos> productos=serviceRepuestos.listar();
+        modelo.addAttribute("lrepuestos", productos);
+        List<Clientes>clientes=serviceClientes.listar();
+        modelo.addAttribute("lclientes", clientes);
         return "pedidonuevo";
     }
 
@@ -57,6 +91,11 @@ public class ControllerPedidos {
     {
         Optional<Pedidos> pedidos=service.listarId(id);
         modelo.addAttribute("pedidos", pedidos);
+        
+        List<Productos> productos=serviceRepuestos.listar();
+        modelo.addAttribute("lrepuestos", productos);
+        List<Clientes>clientes=serviceClientes.listar();
+        modelo.addAttribute("lclientes", clientes);
         return "pedidonuevo";
     }
 

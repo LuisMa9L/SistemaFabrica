@@ -1,6 +1,8 @@
 package com.proyecto.fabrica.controller;
 
+import com.proyecto.fabrica.interfaceService.ICarrosService;
 import com.proyecto.fabrica.interfaceService.IProductosService;
+import com.proyecto.fabrica.modelo.Carros;
 import com.proyecto.fabrica.modelo.Productos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,8 @@ public class ControllerProductos {
 
     @Autowired
     private IProductosService service;
+    @Autowired
+    private ICarrosService serviceCarros;
 
     @GetMapping("/productos")
     public String listar(Model model)
@@ -32,6 +36,8 @@ public class ControllerProductos {
     @GetMapping("/productonuevo")
     public String agregar(Model modelo){
         modelo.addAttribute("productos", new Productos());
+        List<Carros> carros=serviceCarros.listar();
+        modelo.addAttribute("lcarros", carros);
         return "productonuevo";
     }
 
@@ -46,6 +52,8 @@ public class ControllerProductos {
     {
         Optional<Productos> productos=service.listarId(id);
         modelo.addAttribute("productos", productos);
+        List<Carros> carros=serviceCarros.listar();
+        modelo.addAttribute("lcarros", carros);
         return "productonuevo";
     }
 

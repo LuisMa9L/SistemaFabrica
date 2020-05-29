@@ -8,16 +8,7 @@
 <body>
 <div class="container mt-4">
     <h1>Fabrica de repuestos GUATEMALA</h1>
-    <h2>Modulo de Pedidos</h2>
-    <a th:href="@{/carros}" class="btn btn-primary">Carros</a>
-    <a th:href="@{/listar}" class="btn btn-primary">Clientes</a>
-    <a th:href="@{/productos}" class="btn btn-primary">Productos</a>
-    <a th:href="@{/pedidos}" class="btn btn-primary">Pedidos</a>
-    <a th:href="@{/listausuarios}" class="btn btn-primary">Usuarios</a>
-    <hr>
-    <a th:href="@{/pedidonuevo}" class="btn btn-secondary">Pedido Nuevo</a>
-    <a th:href="@{/excel}" class="btn btn-secondary">Excel</a>
-    <a th:href="@{/sendmail}" class="btn btn-secondary">Mandar por correo</a>
+    <h2>Pedidos por cliente</h2>
     <hr>
     <table class="table">
         <thead>
@@ -28,7 +19,6 @@
             <th>Estado</th>
             <th>Cliente</th>
             <th>Precio final</th>
-            <th>Acciones</th>
         </tr>
         </thead>
         <tbody>
@@ -39,16 +29,9 @@
             <td th:text="${pedido.estado}"></td>
             <td th:text="${pedido.clientes}"></td>
             <td th:text="${pedido.precio_final}"></td>
-            <td>
-                <a class="btn btn-success" th:href="@{/pedidodetalle/}+${pedido.id}">Detalle</a>
-                <a class="btn btn-warning" th:href="@{/editarpedido/}+${pedido.id}">Editar</a>
-                <a class="btn btn-danger" th:href="@{/eliminarpedido/}+${pedido.id}">Borrar</a>
-            </td>
         </tr>
         </tbody>
     </table>
-
-
 </div>
 <hr>
 <script

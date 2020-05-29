@@ -23,7 +23,7 @@ public class Controlador {
     {
         List<Clientes>clientes=service.listar();
         model.addAttribute("clientes", clientes);
-        return "index";
+        return "clientes";
     }
 
     @GetMapping("/new")
