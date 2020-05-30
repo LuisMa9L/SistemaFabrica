@@ -120,7 +120,12 @@ function CalculandoFechaEntrega() {
     fecha2.value = fecha.toISOString().substr(0, 10);
 }
 
-
+try {
+    CalculandoPrecioFinal();
+    CalculandoFechaEntrega();
+} catch (error) {
+    
+}
     
 </script>
 </body>
