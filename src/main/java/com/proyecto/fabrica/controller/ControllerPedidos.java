@@ -99,8 +99,8 @@ public class ControllerPedidos {
     public String solicitudes(Model modelo, @PathVariable String id) throws JSONException, ParseException
     {
         NetCliente nc = new NetCliente();
-        
-        String urlCliente = "http://localhost:8080/restpedidos/";
+        String url = "http://localhost:8080";
+        String urlCliente = url+ "/restpedidos/";
         String valores = nc.MetodoGet(urlCliente);
         
         JSONArray json = new JSONArray(valores);
@@ -110,7 +110,7 @@ public class ControllerPedidos {
             JSONObject jsonob = json.getJSONObject(i);
             
             // Url detalle
-            String urlOb = jsonob.getString("url");
+            String urlOb = url + "/restdetalle/";
             
             int codigoPedido = jsonob.getInt("Codigo_Pedido");
             
@@ -131,33 +131,35 @@ public class ControllerPedidos {
             // Url detalle
             for (int j = 0; j < jsonDetalle.length(); j++) {
                 JSONObject jsonObDetalle = jsonDetalle.getJSONObject(j);
-                String codigoRepuesto = jsonObDetalle.getString("Productos");
-                
-                // Calculando sub total
-                int cantidadRepuesto = jsonObDetalle.getInt("Cantidad");
-                Optional<Productos> repuesto = serviceRepuestos.listarId(codigoRepuesto);
-                int subTotal = 0;
-                if (!repuesto.isEmpty()) {
-                    subTotal = cantidadRepuesto * repuesto.get().getPrecio();
+                String Pedidofk = jsonObDetalle.getString("Pedidofk");
+                Pedidofk = Pedidofk.substring(37,Pedidofk.length()-1);
+                int pedidofk = Integer.parseInt(Pedidofk);
+                if (pedidofk == codigoPedido) {
+                    String codigoRepuesto = jsonObDetalle.getString("Productos");
+                    // Calculando sub total
+                    int cantidadRepuesto = jsonObDetalle.getInt("Cantidad");
+                    Optional<Productos> repuesto = serviceRepuestos.listarId(codigoRepuesto);
+                    int subTotal = 0;
+                    if (!repuesto.isEmpty()) {
+                        subTotal = cantidadRepuesto * repuesto.get().getPrecio();
+                    }
+                    //Nuevo pedido para guardar en la bd
+                    Pedidos pedido2 = new Pedidos();
+                    //Creando llave única
+                    pedido2.setId("1"+codigoPedido+i+j+id);
+                    pedido2.setFecha_recibido(fechaPedido);
+                    pedido2.setFecha_entrega(fechaEntrega);
+                    pedido2.setClientes(id);
+                    ArrayList<String> repuestos = new ArrayList<>();
+                    repuestos.add(codigoRepuesto);
+                    pedido2.setRepuestos(repuestos);
+                    pedido2.setCantidad(cantidadRepuesto);
+                    pedido2.setPrecio_final(subTotal);
+                    pedido2.setVisto(0);
+                    service.save(pedido2);
                 }
-                //Nuevo pedido para guardar en la bd
-                Pedidos pedido2 = new Pedidos();
-                //Creando llave única
-                pedido2.setId("1"+codigoPedido+i+j+id);
-                pedido2.setFecha_recibido(fechaPedido);
-                pedido2.setFecha_entrega(fechaEntrega);
-                pedido2.setClientes(id);
-                ArrayList<String> repuestos = new ArrayList<>();
-                repuestos.add(codigoRepuesto);
-                pedido2.setRepuestos(repuestos);
-                pedido2.setCantidad(cantidadRepuesto);
-                pedido2.setPrecio_final(subTotal);
-                pedido2.setVisto(0);
-                service.save(pedido2);
             }
         }
-        
-        //service.delete(id);
         return "redirect:/pedidos";
     }
 
