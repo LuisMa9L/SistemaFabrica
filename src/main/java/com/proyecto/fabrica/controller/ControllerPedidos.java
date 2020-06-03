@@ -75,6 +75,11 @@ public class ControllerPedidos {
     {
         Optional<Pedidos> pedidos=service.listarId(id);
         modelo.addAttribute("pedidos", pedidos);
+        
+        List<Productos> productos=serviceRepuestos.listar();
+        modelo.addAttribute("lrepuestos", productos);
+        List<Clientes>clientes=serviceClientes.listar();
+        modelo.addAttribute("lclientes", clientes);
         return "pedidodetalle";
     }
 
@@ -149,6 +154,7 @@ public class ControllerPedidos {
                     pedido2.setId("1"+codigoPedido+i+j+id);
                     pedido2.setFecha_recibido(fechaPedido);
                     pedido2.setFecha_entrega(fechaEntrega);
+                    pedido2.setEstado("");
                     pedido2.setClientes(id);
                     ArrayList<String> repuestos = new ArrayList<>();
                     repuestos.add(codigoRepuesto);

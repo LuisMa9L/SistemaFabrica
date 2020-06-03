@@ -2,6 +2,8 @@ package com.proyecto.fabrica.controller;
 
 import com.proyecto.fabrica.interfaceService.IPedidosService;
 import com.proyecto.fabrica.modelo.Pedidos;
+import com.proyecto.fabrica.modelo.Recibidos;
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,9 +27,13 @@ public class RestPedidos {
      */
 
     @GetMapping
-    public List<Pedidos> listar(){
-
-        return service.listar();
+    public ArrayList<Recibidos> listar(){
+        Recibidos re = new Recibidos();
+        re.setNombre_producto("Hola mundo XD");
+        //List<Recibidos> res = new List<Recibidos>();
+        ArrayList<Recibidos> res = new ArrayList<>();
+        res.add(re);
+        return res;
     }
 
     /**
